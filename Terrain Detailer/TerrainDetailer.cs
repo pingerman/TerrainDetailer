@@ -32,6 +32,22 @@
         GameObject detailPrefab;
 
         /// <summary>
+        /// Scale of instanced object
+        /// </summary>
+        [Tooltip("Scale of instanced object")]
+        [Range(0.2f, 5f)]
+        [SerializeField]
+        float scale = 1f;
+
+        /// <summary>
+        /// Random of scale of instanced object
+        /// </summary>
+        [Tooltip("Random of scale of instanced object")]
+        [Range(0f, 5f)]
+        [SerializeField]
+        float randomScale = 1f;
+
+        /// <summary>
         /// Freeze time by one click
         /// </summary>
         [Tooltip("Freeze time by one click")]
@@ -156,7 +172,14 @@
             if (!folder)
                 folder = SetNewFolder();
 
-            Instantiate(this.detailPrefab, hit.point, Quaternion.identity, folder);
+            var detail = Instantiate(this.detailPrefab, hit.point, Quaternion.identity, folder);
+
+            float random = 0f;
+
+            if(this.randomScale > 0f)
+                random = Random.Range(0f, this.randomScale);
+
+            detail.transform.localScale = Vector3.one * (this.scale + random);
         }
 
         /// <summary>
