@@ -35,7 +35,7 @@
         /// Freeze time by one click
         /// </summary>
         [Tooltip("Freeze time by one click")]
-        [Range(1f, 10f)]
+        [Range(1f, 5f)]
         [SerializeField]
         float clickFreeze = 1f;
 
@@ -96,12 +96,8 @@
             if (this.folderName == "" || !this.detailPrefab)
                 return;
 
-            //Check click freeze
-            if (this.clickFreezeLeft > 0f)
-            {
+            if(this.clickFreezeLeft > 0f)
                 this.clickFreezeLeft -= Time.fixedDeltaTime;
-                return;
-            }
 
             var controlId = GUIUtility.GetControlID(FocusType.Passive);
             var currentEvent = Event.current;
@@ -115,6 +111,15 @@
             Ray ray = HandleUtility.GUIPointToWorldRay(mousePos);
             RaycastHit hit;
             var currentType = currentEvent.GetTypeForControl(controlId);
+
+            if (currentType == EventType.mouseDrag && currentEvent.button == 0)
+            {
+                //Check click freeze
+                if (this.clickFreezeLeft > 0f)
+                {
+                    return;
+                }
+            }
 
             if ((currentType == EventType.MouseDown || currentType == EventType.mouseDrag) && currentEvent.button == 0)
             {
