@@ -1,7 +1,6 @@
 ﻿namespace Pingerman.Tools.Terrain
 {
     using UnityEngine;
-
 #if UNITY_EDITOR
     using UnityEditor;
 #endif
@@ -172,7 +171,10 @@
             if (!folder)
                 folder = SetNewFolder();
 
-            var detail = Instantiate(this.detailPrefab, hit.point, Quaternion.identity, folder);
+            var detail = (GameObject)PrefabUtility.InstantiatePrefab(this.detailPrefab);
+            detail.transform.parent = folder;
+            detail.transform.position = hit.point;
+            detail.transform.rotation = Quaternion.identity;
 
             float random = 0f;
 
